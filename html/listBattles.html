@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Battle List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+  
+</head>
+<body>
+  <a href="/">Go Back</a>
+  <table>
+    <thead>
+      <tr>
+        <td>Date + Time</td>
+        <td>Competitor A</td>
+        <td>Competitor B</td>
+        <td>Winner</td>
+        <td>Winner's Remaing Stock</td>
+      </tr>
+    </thead>
+  </table>
+  <script>
+    document.table = document.querySelector("table")
+    fetch("/data/users").then(response=>{
+      return response.json()
+    }).then(users=>{
+      document.users = users
+    }).then(()=>{
+      return fetch("/data/battles")
+    }).then(response=>{
+      return response.json()
+    }).then(json =>{
+      let users = document.users
+      json.sort((a,b)=>(a.date>b.date))
+      json.forEach((el,i)=>{
+        let ua = users[el.userA],
+            ub = users[el.userB];
+        document.table.innerHTML+= `<tr>
+          <td>${new Date(el.date).toLocaleString()}</td>
+          <td>${ua.firstName} ${ua.lastName}</td>
+          <td>${ub.firstName} ${ub.lastName}</td>
+          <td>${el.outcome < 0.5? ua.firstName:ub.firstName}</td>
+          <td>${Math.round(((Math.abs(el.outcome - 0.5))+0.1)/0.2)}</td></tr>`
+      })
+    })
+  </script>
+</body>
+</html>

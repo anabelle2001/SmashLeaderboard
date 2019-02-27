@@ -1,0 +1,33 @@
+body {
+  background: lightblue;
+  font-family: sans-serif;
+}
+
+table {
+  background:gray;
+}
+td {
+  padding:4px;
+  margin:4px;
+  background:white
+}
+thead {
+  font-weight: bold;
+}
+
+
+h1 {
+  vertical-align: middle;
+  line-height: 60px;
+}
+h1:before {
+  vertical-align: middle;
+
+  background-image:url("./icon.png");
+  background-size:40px 40px;
+  width:40px;
+  height:40px;
+  margin: 10px;
+  display: inline-block;
+  content:"";
+}

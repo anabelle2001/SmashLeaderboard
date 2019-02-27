@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Add Battle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+  <script src="populateCompetitorDropdown.js"></script>
+</head>
+<body>
+  <h3>Record a Match</h3>
+  <form method="POST" action="data/addBattle">
+    <label for="userA">Select a person to serve as competitor A</label>
+    <select class="selectUser" name="userA"><option>Loading...</option></select>
+    <br>
+
+    <label for="userB">Select a person to serve as competitor B</label>
+    <select class="selectUser" name="userB"><option>Loading...</option></select>
+    <br>
+
+    <label for="outcome">Select an outcome:</label>
+    <select name="outcome">
+      <optgroup>
+        <option value="0.0">3 stock victory for competitor A</optionv>
+        <option value="0.2">2 stock victory for competitor A</option>
+        <option value="0.4">1 stock victory for competitor A</option>
+      </optgroup>
+      <optgroup>  
+        <option value="0.6">1 stock victory for competitor B</option>
+        <option value="0.8">2 stock victory for competitor B</option>
+        <option value="1.0">3 stock victory for competitor B</option>
+      </optgroup>
+    </select>
+    <input type="submit">
+  </form>
+  <a href="/">Go Back</a>
+</body>
+</html>
