@@ -6,6 +6,7 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>User List</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="./downloadObjects.js"></script>
   <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 <body>
@@ -13,35 +14,34 @@
   <table>
     <thead>
       <tr>
-        <td>Rank</td>
-        <td>First Name</td>
-        <td>Last Name</td>
+        <td style="visibility: hidden;"></td>
+        <td>Full Name</td>
         <td>ELO</td>
-        <td>User ID</td>
-        <td># of games</td>
+        <td>Record</td>
+        <td>%<sub>W</sub></td>
+        <td>ID</td>
       </tr>
     </thead>
   </table>
   <script>
     document.table = document.querySelector("table")
-    fetch("/data/users").then(response=>{
-      return response.json()
-    }).then(json =>{
-      json.sort((a,b)=>{
+    document.objectsLoaded.then(response=>{
+      document.users.sort((a,b)=>{
         if(a.rank == b.rank)
           return 0;
         if(a.rank < b.rank)
           return 1;
         return -1
       })
-      json.forEach((el,i)=>{
+      document.users.forEach((el,i)=>{
         document.table.innerHTML+= `<tr>
-      <td>${i+1}</td>
-      <td>${el.firstName}</td>
-      <td>${el.lastName}</td>
-      <td>${el.rank}</td>
-      <td>${el.id}</td>
-      <td>${el.games}</td></tr>`
+          <td>#${i+1}</td>
+          <td>${el.firstName} ${el.lastName}</td>
+          <td>${el.rank}</td>
+          <td>${el.games.length-el.wins}/${el.games.length}</td>
+          <td>${Math.floor(100*(el.games.length-el.wins)/(el.games.length||1))}%</td>
+          <td>${el.id}</td>
+        </tr>`
       })
     })
   </script>

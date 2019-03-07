@@ -7,6 +7,7 @@
   <title>Add Battle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+  <script src=downloadObjects.js></script>
   <script src="populateCompetitorDropdown.js"></script>
 </head>
 <body>
@@ -23,6 +24,14 @@
     <label for="outcome">Select an outcome:</label>
     <select name="outcome">
       <optgroup>
+        <option value="0.0">3-0 for competitor A</optionv>
+        <option value="0.25">2-1 for competitor A</option>
+      </optgroup>
+      <optgroup>  
+        <option value="0.75">1-2 for competitor B</option>
+        <option value="1.0">0-3 for competitor B</option>
+      </optgroup>
+      <!-- <optgroup>
         <option value="0.0">3 stock victory for competitor A</optionv>
         <option value="0.2">2 stock victory for competitor A</option>
         <option value="0.4">1 stock victory for competitor A</option>
@@ -31,7 +40,7 @@
         <option value="0.6">1 stock victory for competitor B</option>
         <option value="0.8">2 stock victory for competitor B</option>
         <option value="1.0">3 stock victory for competitor B</option>
-      </optgroup>
+      </optgroup> -->
     </select>
     <input type="submit">
   </form>
