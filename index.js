@@ -1,36 +1,97 @@
-
+const crypto = require('crypto');
 let express = require('express');
-let app = express();
 let path = require('path');
 let fs = require('fs')
+let APP = express();
+APP.use(express.urlencoded())
+
+//https redirect
+express().get('*', function (req, res) {
+  res.redirect('https://' + req.headers.host + req.url);
+}).listen(80);
+
+
+
+//THIS IS GLITCHED FOR SOME REASON
+let https = require("https")
+let options = {
+  key: fs.readFileSync('secrets/server.key', 'utf8'),
+  cert: fs.readFileSync('secrets/server.crt', 'utf8')
+};
+let httpsServer = https.createServer(options, APP) 
+httpsServer.listen(443);
+
 const K = 100;
+
 
 let USERS = JSON.parse(fs.readFileSync("./data/users.json"));
 let BATTLES = JSON.parse(fs.readFileSync("./data/battles.json"))
 
-app.use(express.urlencoded())
-app.listen(8080);
 
 
-app.get('/', function (req, res) { res.sendFile(path.join(__dirname + '/html/index.html')) });
-app.get('/addUser', function (req, res) { res.sendFile(path.join(__dirname + '/html/addUser.html')) });
-app.get('/addBattle', function (req, res) { res.sendFile(path.join(__dirname + '/html/addBattle.html')); });
-app.get('/listUsers', function (req, res) { res.sendFile(path.join(__dirname + '/html/listUsers.html')); });
-app.get('/listBattles', function (req, res) { res.sendFile(path.join(__dirname + '/html/listBattles.html')); });
-app.get('/main.css', function (req, res) { res.sendFile(path.join(__dirname + '/html/main.css')); });
-app.get('/populateCompetitorDropdown.js', function (req, res) { res.sendFile(path.join(__dirname + '/html/populateCompetitorDropdown.js')); });
-app.get('/downloadObjects.js', function (req, res) { res.sendFile(path.join(__dirname + '/html/downloadObjects.js')); });
-app.get('/favicon.ico', function (req, res) { res.sendFile(path.join(__dirname + '/html/favicon.ico')); });
-app.get('/icon.png', function (req, res) { res.sendFile(path.join(__dirname + '/html/icon.png')); });
+APP.get('/', function (req, res) { res.sendFile(path.join(__dirname + '/resources/index.html')) });
 
-app.get('/data/users',function (req,res) {
+
+let mapping = [
+  {
+    web: '/addUser',
+    file: '/resources/addUser.html'
+  },
+  {
+    web: '/addBattle',
+    file: '/resources/addBattle.html'
+  },
+  {
+    web: '/listUsers',
+    file: '/resources/listUsers.html'
+  },
+  {
+    web: '/listBattles',
+    file: '/resources/listBattles.html'
+  },
+  {
+    web: '/main.css',
+    file: '/resources/main.css'
+  },
+  {
+    web: '/populateCompetitorDropdown.js',
+    file: '/resources/populateCompetitorDropdown.js'
+  },
+  {
+    web: '/downloadObjects.js',
+    file: '/resources/downloadObjects.js'
+  },
+  {
+    web: '/favicon.ico',
+    file: '/resources/favicon.ico'
+  },
+  {
+    web: '/icon.png',
+    file: '/resources/icon.png'
+  },
+  {
+    web: '/editUser',
+    file: '/resources/editUser.html'
+  },
+]
+
+mapping.forEach(page=>{
+  APP.get(
+    page.web, 
+    function (req, res) {
+      res.sendFile(path.join(__dirname + page.file))
+    }
+  );
+})
+
+APP.get('/data/users',function (req,res) {
   res.send(JSON.stringify(USERS))
 })
-app.get('/data/battles', function (req, res) {
+APP.get('/data/battles', function (req, res) {
   res.send(JSON.stringify(BATTLES))
 })
 
-app.post("/data/addUser", function (req,res) {
+APP.post("/data/addUser", function (req,res) {
   let {firstName,lastName} = req.body
   if(!firstName || !lastName){
     res.send("First or last name Empty")
@@ -48,7 +109,7 @@ app.post("/data/addUser", function (req,res) {
   res.redirect("../listUsers")
 })
 
-app.post("/data/addBattle", function (req,res) {
+APP.post("/data/addBattle", function (req,res) {
 
   let {userA,userB,outcome} = req.body;
 
@@ -94,6 +155,11 @@ app.post("/data/addBattle", function (req,res) {
   res.redirect("../listBattles")
 })
 
+APP.post("data/editUser",function (req,res) {
+  //authenticate
+  //
+})
+
 function getDifferential(predictedOutcome,outcome) {
   return Math.floor(K * (predictedOutcome - outcome))
 }
@@ -105,4 +171,17 @@ function SaveObjects() {
   console.log("Writing Objects to Disk");
   fs.writeFile('./data/users.json', JSON.stringify(USERS), (err) => { if (err) throw err; else console.log("updated users.json") })
   fs.writeFile('./data/battles.json', JSON.stringify(BATTLES), (err) => { if (err) throw err; else console.log("updated battles.json") })  
+}
+
+function isAuthentic(userID,password){
+  if(userID.salt && userID){
+    
+  }
+  //TODO:
+}
+
+function SHA256(secret,salt){
+  return crypto.createHash('sha256')
+    .update(secret,'utf8')
+    .digest('base64')
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Edit User</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+  <script src=downloadObjects.js></script>
+  <script src="populateCompetitorDropdown.js"></script>
+</head>
+<body>
+  <h1>User Control Panel</h1>
+  <form method="POST" action="data/editUser">
+    <h3>Target Info</h3>
+    <label for="target">Target User:</label>
+    <select class="selectUser" name="target"><option>Loading...</option></select>
+    <br>
+    
+    <input name="setName" type="checkbox">Change Target's Name to:</input>
+    <input name="setNametoFirst" placeholder="First"></input>
+    <input name="setNametoLast"placeholder="Last"></input>
+    <br>
+
+    <input name="setpassword" type="checkbox">Set Target's password to:</input>
+    <input name="setpasswordto" type="password"></input>
+    <br>
+
+    <h3>Target's Permissions</h3>
+    <label for="canCompete">Set canCompete Role?</label>
+    <select name="canCompete">
+      <option>...</option>
+      <option value="true">Grant</optionv>
+      <option value="false">Deny</optionva>
+    </select>
+    <br>
+
+    <label for="canAddRounds">Set canAddRounds Role?</label>
+    <select name="canAddRounds">
+      <option>...</option>
+      <option value="true">Grant</option>
+      <option value="false">Deny</option>
+    </select>
+    <br>
+
+    <label for="canAddUsers">Set canAddUsers Role?</label>
+    <select name="canAddUsers">
+      <option>...</option>
+      <option value="true">Grant</option>
+      <option value="false">Deny</option>
+    </select>
+    <br>
+
+    <label for="canChangeRoles">Set canChangeRoles Role?</label>
+    <select name="canChangeRoles">
+      <option>...</option>
+      <option value="true">Grant</option>
+      <option value="false">Deny</option>
+    </select>
+    <br>
+
+
+    
+  
+    <h3>Authenticate Yourself</h3>
+    <label for="username">Username</label>
+    <select class="selectUser" name="username"><option>Loading...</option></select>
+    <br>
+    
+    <label for="password">Password</label>
+    <input name="password" type="password">
+    <br>
+    <input type="submit">
+    <br>
+  </form>
+  <a href="/">Go Back</a>
+</body>
+</html>
